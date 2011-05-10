@@ -17,8 +17,9 @@
 ********* TODO deploy auto dans GAE
 ******* TODO poc clojure / twitter [/]
 ******* TODO poc clojure / gae [/]
-***** TODO iteration 1 [/]
+***** TODO iteration 1 [0/1]
 ******* TODO (ugly page) Display the number of twitter tagged #sfeir of a hardcoded list of sfeir accounts.
+
 
   - Display as a simple list, with 2 columns : 
     - twitter name
