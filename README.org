@@ -10,7 +10,7 @@
 
 *** First deployement on Google AppEngine: 
 
-http://twitalyse-beta.appspot.com/
+[[http://twitalyse-beta.appspot.com/][twitalyse beta on appengine]]
 
 * Roadmap : 
 
