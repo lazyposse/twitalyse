@@ -6,17 +6,31 @@
 
 [[https://denlab-maven-repository.googlecode.com/svn/resource/Twitalyse.png]]
 
+* Resources
+
+*** First deployement on Google AppEngine: 
+
+http://twitalyse-beta.appspot.com/
 
 * Roadmap : 
 
-** TODO iteration 0 [0/4]
+** TODO iteration 0 [0/3]
 *** TODO infra [0/2]
 **** TODO put in place cloudbees [0/2]
 ***** TODO creation d'un compte
 ***** TODO init job
 **** TODO deploy auto dans GAE
 *** TODO poc clojure / twitter [/]
-*** TODO (INPROGRESS: del) poc clojure / gae [/]
+*** TODO poc clojure / gae [2/3]
+
+***** DONE feedback on the author of appengine-magic: for the sdk 1.4.3
+CLOSED: [2011-05-10 Tue 21:08]
+won't do
+
+***** DONE deploy on appengine
+CLOSED: [2011-05-10 Tue 21:09]
+
+***** TODO write how to deploy on appengine 
 ** TODO iteration 1 [0/1]
 *** TODO (ugly page) Display the number of twitter tagged #sfeir of a hardcoded list of sfeir accounts.
 
