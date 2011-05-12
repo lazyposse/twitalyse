@@ -3,19 +3,18 @@
 #+STARTUP: hidestars odd
 
 * Twitalyse: Analyse your tweets. NOW!
-
 [[https://denlab-maven-repository.googlecode.com/svn/resource/Twitalyse.png]]
 
 * Resources
-
 *** First deployement on Google AppEngine: 
-
 [[http://twitalyse-beta.appspot.com/][twitalyse beta on appengine]]
 
 * Roadmap : 
-
 ** TODO iteration 0 [0/3]
-*** TODO infra [0/2]
+*** TODO infra [1/3]
+**** DONE Pre-requisites - Development Platform [2/2]
+***** DONE Install leiningen https://github.com/technomancy/leiningen
+***** DONE Install swank-clojure https://github.com/technomancy/swank-clojure
 **** TODO put in place cloudbees [0/2]
 ***** TODO creation d'un compte
 ***** TODO init job
@@ -33,7 +32,6 @@ CLOSED: [2011-05-10 Tue 21:09]
 ***** TODO write how to deploy on appengine 
 ** TODO iteration 1 [0/1]
 *** TODO (ugly page) Display the number of twitter tagged #sfeir of a hardcoded list of sfeir accounts.
-
 
   - Display as a simple list, with 2 columns : 
     - twitter name
