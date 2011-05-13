@@ -9,8 +9,17 @@
 *** First deployement on Google AppEngine: 
 [[http://twitalyse-beta.appspot.com/][twitalyse beta on appengine]]
 
+
+* Dev Doc
+
+  * Installing
+
+    cd twitter-poc
+    lein deps
+    lein swank
+
 * Roadmap : 
-** TODO iteration 0 [0/3]
+** TODO iteration 0 [2/6]
 *** TODO infra [1/3]
 **** DONE Pre-requisites - Development Platform [2/2]
 ***** DONE Install leiningen https://github.com/technomancy/leiningen
@@ -19,30 +28,47 @@
 ***** TODO creation d'un compte
 ***** TODO init job
 **** TODO deploy auto dans GAE
-*** TODO poc clojure / twitter [/]
-*** TODO poc clojure / gae [2/3]
-
-***** DONE feedback on the author of appengine-magic: for the sdk 1.4.3
+*** TODO technical validation of all components [2/5]
+***** DONE poc clojure / twitter
+      CLOSED: [2011-05-13 Fri 08:30]
+***** DONE poc clojure / gae 
+      CLOSED: [2011-05-13 Fri 08:30]
+******* DONE feedback on the author of appengine-magic: for the sdk 1.4.3
 CLOSED: [2011-05-10 Tue 21:08]
 won't do
 
-***** DONE deploy on appengine
+******* DONE deploy on appengine
 CLOSED: [2011-05-10 Tue 21:09]
 
-***** TODO write how to deploy on appengine 
-** TODO iteration 1 [0/1]
-*** TODO (ugly page) Display the number of twitter tagged #sfeir of a hardcoded list of sfeir accounts.
+***** TODO integration clojure/twitter/gae [0/1]
+      WARN: blacklisted apis in appengine could pose problems
+******* TODO ask the twitter-clojure guys if the lib is GAE compatible
 
-  - Display as a simple list, with 2 columns : 
-    - twitter name
-    - full person name
-    - counter (what about the retweet ? Does it count as a tweet ? KISS!
-      But should be indicated)
-    - sorted by counter, then twitter name
-  - count the tweets since the beginning of the Epoch
+***** TODO poc gae bigtable
+      Note: we will need to use the GAE datastore (see iteration1)
+      Using this api from clojure may not be trivial ...
+*** TODO documentation [/]
+***** TODO write how to deploy on appengine
+** TODO iteration 1 [0/2]
+*** TODO (ugly page) Display the number of twitter tagged #sfeir of a hardcoded list of sfeir accounts. [0/4]
+***** TODO content of the page
+    - Display as a simple list, with 2 columns : 
+      - twitter name
+      - full person name
+      - counter (what about the retweet ? Does it count as a tweet ? KISS!
+        But should be indicated)
+      - sorted by counter, then twitter name
+    - count the tweets since the beginning of the Epoch
+    - display a last updated ("last updated 3h ago")
 
+***** TODO cache the result of the twitter request
+      explaination : the twitter query takes a long time (even for one
+      tweet!). 
+      So we will need to cache it. It means using the GAE datastore ...
 
+***** TODO look of the page [0/2]
+      it would be nice to have a pretty html page (design *is* important)
 
+******* TODO The sfeirien with the most #sfeir twit highlited (winner!)
 
-
-
+******* TODO powered by logos (powered by clojure/gae/sfeir)
