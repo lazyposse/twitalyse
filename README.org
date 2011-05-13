@@ -55,6 +55,7 @@ CLOSED: [2011-05-10 Tue 21:09]
     - If we add them each time in the src files, one day it will by
       pushed by error :)
     - should be in a var env, user home, or something
+    - Loaded from a file which is in .gitignore
     
 ** TODO iteration 1 [0/2]
 *** TODO (ugly page) Display the number of twitter tagged #sfeir of a hardcoded list of sfeir accounts. [0/4]
