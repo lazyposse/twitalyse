@@ -5,6 +5,10 @@
 * Twitalyse: Analyse your tweets. NOW!
 [[https://denlab-maven-repository.googlecode.com/svn/resource/Twitalyse.png]]
 
+|----------------------------------------------------|
+| *WARNING:* pre-experimental, not usable right now. |
+|----------------------------------------------------|
+
 * Resources
 *** First deployement on Google AppEngine: 
 [[http://twitalyse-beta.appspot.com/][twitalyse beta on appengine]]
