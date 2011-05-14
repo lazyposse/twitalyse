@@ -25,6 +25,8 @@ lein swank
 
 ** twitter-poc
 
+Checkup to verify that you can connect correctly to Twitter locally.
+
 *** Running
     CLOSED: [2011-05-14 Sat 13:05]
 
