@@ -12,7 +12,6 @@
 ** First deployement on Google AppEngine: 
 [[http://twitalyse-beta.appspot.com/][twitalyse beta on appengine]]
 
-merge test 2
 * Dev Doc
 
 ** Installing
@@ -37,7 +36,19 @@ lein deps
 lein swank
 #+END_SRC
 
-- Setup the security
+- Setup the security: 
+  - the project needs the file =twitalyse/twitter-poc/src/twitter_poc/secret.clj=
+  - inside you must put:
+#+BEGIN_SRC clojure
+(ns twitter-poc.secret)
+
+;;; Where the secret keys are stored.
+;;; This file MUST NOT be pushed, it's in .gitignore
+
+(def consumer-secret "xxx")
+(def oauth-access-token-secret "yyy")
+#+END_SRC
+
 - In Emacs Slime: 
   - =M-x slime-connect=
   - Load the core: 
