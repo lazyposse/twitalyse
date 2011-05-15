@@ -54,7 +54,7 @@ lein swank
   - =M-x slime-connect=
   - Load the core: 
 #+BEGIN_SRC clojure
-user> (use :reload 'twitter-poc.core)
+user> (use :reload 'twitalyse.twitter)
 nil
 #+END_SRC
   - First query: 
@@ -63,7 +63,10 @@ user> (first (map :text (latest-tweets 1)))
 "Reviens d'un petit tour en ULM au-dessus du Mont St. Michel #cool"
 #+END_SRC
   - That's it !
-** twitter + GAE
+
+** GAE developpement
+
+*** GAE dev deploy
 
 - Start swank =lein swank=
 
@@ -80,7 +83,17 @@ user> (first (map :text (latest-tweets 1)))
 
 - You should see your app in http://localhost:8080
 
-* Roadmap : 
+
+*** GAE production deploy
+
+#+BEGIN_SRC sh
+cd twitalyse
+lein appengine-prepare
+cd $GAE_SDK/bin
+./appcfg.sh update $twitalyse/war/
+#+END_SRC
+
+* Roadmap: 
 ** TODO iteration 0 [0/4]
 *** TODO infra [1/3]
 **** DONE Pre-requisites - Development Platform [2/2]
@@ -104,9 +117,18 @@ won't do
 ***** DONE deploy on appengine
 CLOSED: [2011-05-10 Tue 21:09]
 
-**** TODO integration clojure/twitter/gae [0/1]
+**** TODO integration clojure/twitter/gae [1/3]
      WARN: blacklisted apis in appengine could pose problems
-***** TODO ask the twitter-clojure guys if the lib is GAE compatible
+
+   Yes, https with GAE, doesn't work (httpsconnection is blacklisted).
+   Even with http it breaks in fact, see this [[https://github.com/mattrepl/clojure-twitter/issues/4][issue]].
+
+***** DONE ask the twitter-clojure guys if the lib is GAE compatible
+      CLOSED: [2011-05-15 Sun 14:16]
+
+      See issue above.
+
+***** TODO look for twitter4j (gae ready) [/]
 
 **** TODO poc gae bigtable
      Note: we will need to use the GAE datastore (see iteration1)
