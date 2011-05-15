@@ -9,9 +9,11 @@
               {}
               s))
 
+;; raw results from twitter
 (def raw-results (.search (.getInstance (TwitterFactory.))
                           (Query. "#sfeir")))
 
+;; reworked results, so we have a count of the tweets by user
 (def results (group-by-count
               (map #(.getFromUser %)
                    (.getTweets raw-results))))
