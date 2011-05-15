@@ -1,4 +1,4 @@
-(ns twitter-poc.test.core
+(ns twitalyse.test.core
   (:use [twitter-poc.core])
   (:use [clojure.test]))
 
