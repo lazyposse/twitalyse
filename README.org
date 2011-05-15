@@ -128,7 +128,14 @@ CLOSED: [2011-05-10 Tue 21:09]
 
       See issue above.
 
-***** TODO look for twitter4j (gae ready) [/]
+***** TODO look for twitter4j (gae ready) [1/3]
+
+****** DONE local java test
+       CLOSED: [2011-05-15 Sun 15:55]
+
+****** TODO in clojure
+
+****** TODO in clojure + GAE
 
 **** TODO poc gae bigtable
      Note: we will need to use the GAE datastore (see iteration1)
@@ -150,7 +157,8 @@ CLOSED: [2011-05-10 Tue 21:09]
      - counter (what about the retweet ? Does it count as a tweet ? KISS!
        But should be indicated)
      - sorted by counter, then twitter name
-   - count the tweets since the beginning of the Epoch
+   - count the tweets since the twitter api gives us (5-7 days
+     according to this [[http://groups.google.com/group/twitter4j/browse_thread/thread/63ee76be0f7d3d80][thread]].
    - display a last updated ("last updated 3h ago")
 
 **** TODO cache the result of the twitter request
@@ -164,3 +172,7 @@ CLOSED: [2011-05-10 Tue 21:09]
 ****** TODO The sfeirien with the most #sfeir twit highlited (winner!)
 
 ******* TODO powered by logos (powered by clojure/gae/sfeir)
+
+** TODO iteration 2 [/]
+
+*** TODO store the tweets for history since the begining of times
