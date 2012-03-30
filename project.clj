@@ -1,11 +1,11 @@
 (defproject twitalyse "1.0.0-SNAPSHOT"
-  :description "FIXME: write description"
-  :dependencies [[org.clojure/clojure "1.2.1"]
+  :description "Analyse your tweets"
+  :dependencies [[org.clojure/clojure "1.3.0"]
                  [org.twitter4j/twitter4j-core "[2.1,)"]]
   :dev-dependencies [[appengine-magic "0.4.1"]
-                     [org.clojure/clojure-contrib "1.2.0"]])
-
-
+                     [midje "1.3.1"]
+                     [com.intelie/lazytest "1.0.0-SNAPSHOT" :exclusions [swank-clojure]]
+                     [lein-marginalia "0.7.0-SNAPSHOT"]])
 
 {:ok [0 127]
  :ko [128]}
