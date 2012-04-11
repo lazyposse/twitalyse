@@ -1,5 +1,6 @@
 (ns twitalyse.twitter
-  (:import (twitter4j TwitterFactory Query)))
+  (use [clojure.pprint :only [pprint]])
+  (import (twitter4j TwitterFactory Query)))
 
 (defn group-by-count
   "Takes a seq and return a map of {values, count}"
@@ -9,14 +10,25 @@
               {}
               s))
 
+(defn make-query
+  [hashtag pagenumber] (doto (Query. (str "#" hashtag))
+                         (.setRpp 100)
+                         (.setPage pagenumber)))
+
 ;; raw results from twitter
-(def raw-results (.search (.getInstance (TwitterFactory.))
-                          (Query. "#sfeir")))
+(defn raw-results
+  [hashtag pagenumber] (.search (.getInstance (TwitterFactory.))
+                                (make-query hashtag pagenumber)))
 
 ;; reworked results, so we have a count of the tweets by user
-(def results (group-by-count
-              (map #(.getFromUser %)
-                   (.getTweets raw-results))))
+(defn results-page [hashtag pagenumber]
+  (map #(.getFromUser %)
+       (.getTweets (raw-results hashtag pagenumber))))
+
+(defn results
+  [hashtag] (flatten (take-while seq
+                                 (map #(results-page hashtag %)
+                                      (iterate inc 1)))))
 
 ;; use to play with the repl
 '(ns user

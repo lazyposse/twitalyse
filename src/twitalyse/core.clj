@@ -7,8 +7,9 @@
   {:status 200
    :headers {"Content-Type" "text/plain"}
    :body (str
-          "Best #sfeir twitters (last 5-7 days):\n"
-          twitter/results
+          (java.util.Date.)
+          "\nBest #sfeir twitters (last 5-7 days):\n"
+          (twitter/results "sfeir")
           "\n\n"
           " [powered by AppEngine and clojure]")})
 
