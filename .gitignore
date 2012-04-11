@@ -1,0 +1,8 @@
+pom.xml
+*jar
+/lib/
+/classes/
+.lein-deps-sum
+war/WEB-INF/lib/
+README.html
+secret.clj
