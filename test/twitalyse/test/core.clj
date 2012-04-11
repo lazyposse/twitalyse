@@ -1,6 +1,5 @@
 (ns twitalyse.test.core
-  (:use [twitalyse.core])
-  (:use [clojure.test]))
+  (:use [twitalyse.core]
+        [midje.sweet]))
 
-(deftest replace-me ;; FIXME: write
-  (is false "No tests have been written."))
+(fact (+ 1 1) => 2)
