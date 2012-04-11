@@ -7,6 +7,3 @@
                      [lein-midje "1.0.9"]
                      [com.intelie/lazytest "1.0.0-SNAPSHOT" :exclusions [swank-clojure]]
                      [lein-marginalia "0.7.0"]])
-
-{:ok [0 127]
- :ko [128]}
