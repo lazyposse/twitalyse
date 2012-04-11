@@ -25,19 +25,19 @@
     (.getQuery q) => "#test"))
 
 (defn raw-results
-  "Raw results from twitter"
+  "Given a hashtag and a page number, return the raw results."
   [hashtag pagenumber]
   (.search (.getInstance (TwitterFactory.))
            (make-query hashtag pagenumber)))
 
 (defn results-page
-  "Reworked results, so we have a count of tweets by user"
+  "Given a hashtag and a page number, return the count of tweets by users on this page number"
   [hashtag pagenumber]
   (map #(.getFromUser %)
        (.getTweets (raw-results hashtag pagenumber))))
 
 (defn results
-  "Given a hashtag, return the seq list of pair [user count-tweets-hashtag]"
+  "Given a hashtag, return all the results for this hashtag (aggregate all the pages)."
   [hashtag]
   (flatten
    (take-while seq
