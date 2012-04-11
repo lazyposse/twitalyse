@@ -18,6 +18,12 @@
     (.setRpp 100)
     (.setPage pagenumber)))
 
+(fact "make-query" ;; java not easy to test
+  (let [q (make-query "test" 10)]
+    (.getPage q) => 10
+    (.getRpp q) => 100
+    (.getQuery q) => "#test"))
+
 (defn raw-results
   "Raw results from twitter"
   [hashtag pagenumber]
