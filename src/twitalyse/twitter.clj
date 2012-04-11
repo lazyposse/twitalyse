@@ -14,16 +14,27 @@
   (group-by-count ["a" "a" "b" "a"]) => {"a" 3
                                          "b" 1})
 
+(defn make-query
+  [hashtag pagenumber] (doto (Query. (str "#" hashtag))
+                         (.setRpp 100)
+                         (.setPage pagenumber)))
+
 ;; raw results from twitter
-(def raw-results (.search (.getInstance (TwitterFactory.))
-                          (Query. "#sfeir")))
+(defn raw-results
+  [hashtag pagenumber] (.search (.getInstance (TwitterFactory.))
+                                (make-query hashtag pagenumber)))
 
 
 
 ;; reworked results, so we have a count of the tweets by user
-(def results (group-by-count
-              (map #(.getFromUser %)
-                   (.getTweets raw-results))))
+(defn results-page [hashtag pagenumber]
+  (map #(.getFromUser %)
+       (.getTweets (raw-results hashtag pagenumber))))
+
+(defn results
+  [hashtag] (flatten (take-while seq
+                                 (map #(results-page hashtag %)
+                                      (iterate inc 1)))))
 
 
 ;; use to play with the repl
