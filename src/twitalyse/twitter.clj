@@ -1,5 +1,5 @@
 (ns twitalyse.twitter
-  (:import (twitter4j TwitterFactory Query))
+  (:import [twitter4j TwitterFactory Query])
   (:use [midje.sweet]))
 
 (defn group-by-count
@@ -10,8 +10,9 @@
               {}
               s))
 
-(fact (group-by-count ["a" "a" "b" "a"]) => {"a" 3
-                                             "b" 1})
+(fact "group-by-count"
+  (group-by-count ["a" "a" "b" "a"]) => {"a" 3
+                                         "b" 1})
 
 ;; raw results from twitter
 (def raw-results (.search (.getInstance (TwitterFactory.))
