@@ -1,6 +1,6 @@
 (ns twitalyse.test.twitter
-  (:use [twitalyse.twitter])
-  (:use [clojure.test]))
+  (:use [twitalyse.twitter]
+        [midje.sweet]))
 
-(deftest test-group-by-count
-  (is (= {"a" 1 "b" 2} (group-by-count ["b" "a" "b"]))))
+(fact "group-by-count"
+  (group-by-count ["b" "a" "b"]) => {"a" 1 "b" 2})
