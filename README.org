@@ -1,0 +1,178 @@
+#+TITLE: Twitalyse
+#+STARTUP: indent
+
+* Twitalyse: Analyse your tweets. NOW!
+[[https://denlab-maven-repository.googlecode.com/svn/resource/Twitalyse.png]]
+
+|----------------------------------------------------|
+| *WARNING:* pre-experimental, not usable right now. |
+|----------------------------------------------------|
+
+* Resources
+** First deployement on Google AppEngine: 
+[[http://twitalyse-beta.appspot.com/][twitalyse beta on appengine]]
+
+* Dev Doc
+
+** Installing
+
+#+BEGIN_SRC sh
+cd twitter-poc
+lein deps
+lein swank
+#+END_SRC
+
+** twitter-poc
+
+Checkup to verify that you can connect correctly to Twitter locally.
+
+*** Running
+    CLOSED: [2011-05-14 Sat 13:05]
+
+- Go to the =twitter-poc= directory and start a swank server: 
+#+BEGIN_SRC sh
+cd twitter-poc
+lein deps
+lein swank
+#+END_SRC
+
+- Setup the security: 
+  - the project needs the file =twitalyse/twitter-poc/src/twitter_poc/secret.clj=
+  - inside you must put (where xxx and yyy are the consumer-secret and
+    the oauth-access-token): 
+#+BEGIN_SRC clojure
+(ns twitter-poc.secret)
+
+;;; Where the secret keys are stored.
+;;; This file MUST NOT be pushed, it's in .gitignore
+
+(def consumer-secret "xxx")
+(def oauth-access-token-secret "yyy")
+#+END_SRC
+
+- In Emacs Slime: 
+  - =M-x slime-connect=
+  - Load the core: 
+#+BEGIN_SRC clojure
+user> (use :reload 'twitalyse.twitter)
+nil
+#+END_SRC
+  - First query: 
+#+BEGIN_SRC clojure
+user> (first (map :text (latest-tweets 1)))
+"Reviens d'un petit tour en ULM au-dessus du Mont St. Michel #cool"
+#+END_SRC
+  - That's it !
+
+** GAE developpement
+
+*** GAE dev deploy
+
+- Start swank =lein swank=
+
+- Connect in Emacs Slime =M-x slime-connect=
+
+- In the repl: 
+#+BEGIN_SRC clojure
+(require '[appengine-magic.core :as ae])
+
+(use '[twitalyse.core])
+
+(ae/serve twitalyse-app)
+#+END_SRC
+
+- You should see your app in http://localhost:8080
+
+
+*** GAE production deploy
+
+#+BEGIN_SRC sh
+cd twitalyse
+lein appengine-prepare
+cd $GAE_SDK/bin
+./appcfg.sh update $twitalyse/war/
+#+END_SRC
+
+* Roadmap: 
+** TODO iteration 0 [0/4]
+*** TODO infra [1/3]
+**** DONE Pre-requisites - Development Platform [2/2]
+***** DONE Install leiningen https://github.com/technomancy/leiningen
+***** DONE Install swank-clojure https://github.com/technomancy/swank-clojure
+**** TODO put in place cloudbees [0/3]
+***** TODO creation d'un compte
+***** TODO init job
+***** TODO handle secret files in cloudbees
+      We don't want them in the github repo :)
+**** TODO deploy auto dans GAE
+*** TODO technical validation of all components [2/5]
+**** DONE poc clojure / twitter
+     CLOSED: [2011-05-13 Fri 08:30]
+**** DONE poc clojure / gae 
+     CLOSED: [2011-05-13 Fri 08:30]
+***** DONE feedback on the author of appengine-magic: for the sdk 1.4.3
+CLOSED: [2011-05-10 Tue 21:08]
+won't do
+
+***** DONE deploy on appengine
+CLOSED: [2011-05-10 Tue 21:09]
+
+**** TODO integration clojure/twitter/gae [1/3]
+     WARN: blacklisted apis in appengine could pose problems
+
+   Yes, https with GAE, doesn't work (httpsconnection is blacklisted).
+   Even with http it breaks in fact, see this [[https://github.com/mattrepl/clojure-twitter/issues/4][issue]].
+
+***** DONE ask the twitter-clojure guys if the lib is GAE compatible
+      CLOSED: [2011-05-15 Sun 14:16]
+
+      See issue above.
+
+***** TODO look for twitter4j (gae ready) [1/3]
+
+****** DONE local java test
+       CLOSED: [2011-05-15 Sun 15:55]
+
+****** TODO in clojure
+
+****** TODO in clojure + GAE
+
+**** TODO poc gae bigtable
+     Note: we will need to use the GAE datastore (see iteration1)
+     Using this api from clojure may not be trivial ...
+*** TODO documentation [/]
+**** TODO write how to deploy on appengine
+*** TODO security: externalize the secret phrases 
+    - If we add them each time in the src files, one day it will by
+      pushed by error :)
+    - should be in a var env, user home, or something
+    - Loaded from a file which is in .gitignore
+    
+** TODO iteration 1 [0/2]
+*** TODO (ugly page) Display the number of twitter tagged #sfeir of a hardcoded list of sfeir accounts. [0/4]
+**** TODO content of the page
+   - Display as a simple list, with 2 columns : 
+     - twitter name
+     - full person name
+     - counter (what about the retweet ? Does it count as a tweet ? KISS!
+       But should be indicated)
+     - sorted by counter, then twitter name
+   - count the tweets since the twitter api gives us (5-7 days
+     according to this [[http://groups.google.com/group/twitter4j/browse_thread/thread/63ee76be0f7d3d80][thread]].
+   - display a last updated ("last updated 3h ago")
+
+**** TODO cache the result of the twitter request
+     explaination : the twitter query takes a long time (even for one
+     tweet!). 
+     So we will need to cache it. It means using the GAE datastore ...
+
+***** TODO look of the page [0/2]
+      it would be nice to have a pretty html page (design *is* important)
+
+****** TODO The sfeirien with the most #sfeir twit highlited (winner!)
+
+******* TODO powered by logos (powered by clojure/gae/sfeir)
+
+** TODO iteration 2 [/]
+
+*** TODO store the tweets for history since the begining of times
