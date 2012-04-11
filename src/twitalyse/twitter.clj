@@ -5,13 +5,7 @@
 (defn group-by-count
   "Takes a seq and return a map of {values, count}"
   [s]
-  (reduce
-   #(assoc %1 %2
-           (if-let [cnt (%1 %2)]
-             (inc cnt)
-             1))
-   {}
-   s))
+  (reduce #(assoc %1 %2 (if-let [cnt (%1 %2)] (inc cnt) 1)) {} s))
 
 (fact "group-by-count"
   (group-by-count ["a" "a" "b" "a"]) => {"a" 3
