@@ -24,21 +24,31 @@
            (make-query hashtag pagenumber)))
 
 (defn results-page
-  "Given a hashtag and a page number, return the count of tweets by users on this page number"
+  "Given a hashtag and a page number, return the users that tweets with this hashtag for this page."
   [hashtag pagenumber]
   (map #(.getFromUser %)
        (.getTweets (raw-results hashtag pagenumber))))
 
-(fact
-  (results-page "ecole" 1) => nil)
+;; As the twitter api limits to 5 days, this will only count the results for these 5 days.
+;; Furthermore, as there is pagination, this function may take some time as this will query
+;; as long as there is page, then aggregate the results.
 
 (defn results
-  "Given a hashtag, return all the results for this hashtag (aggregate all the pages)."
+  "Given a hashtag, return the number of tweets per user that tweet this hashtag."
   [hashtag]
-  (flatten
-   (take-while seq
-               (map #(results-page hashtag %)
-                    (iterate inc 1)))))
+  (frequencies
+   (flatten
+    (take-while seq
+                (map #(results-page hashtag %)
+                     (iterate inc 1))))))
+
+(fact "results"
+  (results :some-hashtag) => {:user1 3
+                              :user2 2
+                              :user3 1}
+  (provided
+    (results-page :some-hashtag 1) => [:user1 :user1 :user2]
+    (results-page :some-hashtag 2) => [:user1 :user2 :user3]))
 
 ;; use to play with the repl
 '(ns user
