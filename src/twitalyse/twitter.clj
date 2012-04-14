@@ -2,9 +2,6 @@
   (:import [twitter4j TwitterFactory Query])
   (:use [midje.sweet]))
 
-(fact "frequencies"
-  (frequencies ["a" "a" "b" "a"]) => {"a" 3 "b" 1})
-
 (defn make-query
   "Build the query for a hashtag and a page number"
   [hashtag pagenumber]
