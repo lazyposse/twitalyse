@@ -2,15 +2,6 @@
   (:import [twitter4j TwitterFactory Query])
   (:use [midje.sweet]))
 
-(defn group-by-count
-  "Takes a seq and return a map of {values, count}"
-  [s]
-  (reduce #(assoc %1 %2 (if-let [cnt (%1 %2)] (inc cnt) 1)) {} s))
-
-(fact "group-by-count"
-  (group-by-count ["a" "a" "b" "a"]) => {"a" 3
-                                         "b" 1})
-
 (defn make-query
   "Build the query for a hashtag and a page number"
   [hashtag pagenumber]
@@ -18,11 +9,10 @@
     (.setRpp 100)
     (.setPage pagenumber)))
 
-(fact "make-query" ;; java not easy to test
-  (let [q (make-query "test" 10)]
-    (.getPage q) => 10
-    (.getRpp q) => 100
-    (.getQuery q) => "#test"))
+(fact "make-query"
+  (bean (make-query "test" 10)) => {:rpp 100, :until nil, :class twitter4j.Query, :page 10, :locale nil,
+                                    :geocode nil, :lang nil, :since nil, :maxId -1, :resultType nil,
+                                    :query "#test", :sinceId -1})
 
 (defn raw-results
   "Given a hashtag and a page number, return the raw results."
@@ -31,18 +21,31 @@
            (make-query hashtag pagenumber)))
 
 (defn results-page
-  "Given a hashtag and a page number, return the count of tweets by users on this page number"
+  "Given a hashtag and a page number, return the users that tweets with this hashtag for this page."
   [hashtag pagenumber]
   (map #(.getFromUser %)
        (.getTweets (raw-results hashtag pagenumber))))
 
+;; As the twitter api limits to 5 days, this will only count the results for these 5 days.
+;; Furthermore, as there is pagination, this function may take some time as this will query
+;; as long as there is page, then aggregate the results.
+
 (defn results
-  "Given a hashtag, return all the results for this hashtag (aggregate all the pages)."
+  "Given a hashtag, return the number of tweets per user that tweet this hashtag."
   [hashtag]
-  (flatten
-   (take-while seq
-               (map #(results-page hashtag %)
-                    (iterate inc 1)))))
+  (frequencies
+   (flatten
+    (take-while seq
+                (map #(results-page hashtag %)
+                     (iterate inc 1))))))
+
+(fact "results"
+  (results :some-hashtag) => {:user1 3
+                              :user2 2
+                              :user3 1}
+  (provided
+    (results-page :some-hashtag 1) => [:user1 :user1 :user2]
+    (results-page :some-hashtag 2) => [:user1 :user2 :user3]))
 
 ;; use to play with the repl
 '(ns user

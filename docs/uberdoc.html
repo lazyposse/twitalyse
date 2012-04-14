@@ -3051,37 +3051,41 @@ net.brehaut.ClojureTools = (function (SH) {
 </td><td class="codes"><pre class="brush: clojure">(ae/def-appengine-app twitalyse-app #'twitalyse-app-handler)</pre></td></tr><tr><td class="spacer docs">&nbsp;</td><td class="codes" /></tr><tr><td class="docs"><div class="docs-header"><a class="anchor" href="#twitalyse.twitter" name="twitalyse.twitter"><h1 class="project-name">twitalyse.twitter</h1><a class="toc-link" href="#toc">toc</a></a></div></td><td class="codes" /></tr><tr><td class="docs">
 </td><td class="codes"><pre class="brush: clojure">(ns twitalyse.twitter
   (:import [twitter4j TwitterFactory Query])
-  (:use [midje.sweet]))</pre></td></tr><tr><td class="docs"><p>Takes a seq and return a map of {values, count}</p>
-</td><td class="codes"><pre class="brush: clojure">(defn group-by-count
-  [s]
-  (reduce #(assoc %1 %2 (if-let [cnt (%1 %2)] (inc cnt) 1)) {} s))</pre></td></tr><tr><td class="docs">
-</td><td class="codes"><pre class="brush: clojure">(fact &quot;group-by-count&quot;
-  (group-by-count [&quot;a&quot; &quot;a&quot; &quot;b&quot; &quot;a&quot;]) =&gt; {&quot;a&quot; 3
-                                         &quot;b&quot; 1})</pre></td></tr><tr><td class="docs"><p>Build the query for a hashtag and a page number</p>
+  (:use [midje.sweet]))</pre></td></tr><tr><td class="docs"><p>Build the query for a hashtag and a page number</p>
 </td><td class="codes"><pre class="brush: clojure">(defn make-query
   [hashtag pagenumber]
   (doto (Query. (str &quot;#&quot; hashtag))
     (.setRpp 100)
     (.setPage pagenumber)))</pre></td></tr><tr><td class="docs">
-</td><td class="codes"><pre class="brush: clojure">(fact &quot;make-query&quot; ;; java not easy to test
-  (let [q (make-query &quot;test&quot; 10)]
-    (.getPage q) =&gt; 10
-    (.getRpp q) =&gt; 100
-    (.getQuery q) =&gt; &quot;#test&quot;))</pre></td></tr><tr><td class="docs"><p>Given a hashtag and a page number, return the raw results.</p>
+</td><td class="codes"><pre class="brush: clojure">(fact &quot;make-query&quot;
+  (bean (make-query &quot;test&quot; 10)) =&gt; {:rpp 100, :until nil, :class twitter4j.Query, :page 10, :locale nil,
+                                    :geocode nil, :lang nil, :since nil, :maxId -1, :resultType nil,
+                                    :query &quot;#test&quot;, :sinceId -1})</pre></td></tr><tr><td class="docs"><p>Given a hashtag and a page number, return the raw results.</p>
 </td><td class="codes"><pre class="brush: clojure">(defn raw-results
   [hashtag pagenumber]
   (.search (.getInstance (TwitterFactory.))
-           (make-query hashtag pagenumber)))</pre></td></tr><tr><td class="docs"><p>Given a hashtag and a page number, return the count of tweets by users on this page number</p>
+           (make-query hashtag pagenumber)))</pre></td></tr><tr><td class="docs"><p>Given a hashtag and a page number, return the users that tweets with this hashtag for this page.</p>
 </td><td class="codes"><pre class="brush: clojure">(defn results-page
   [hashtag pagenumber]
   (map #(.getFromUser %)
-       (.getTweets (raw-results hashtag pagenumber))))</pre></td></tr><tr><td class="docs"><p>Given a hashtag, return all the results for this hashtag (aggregate all the pages).</p>
+       (.getTweets (raw-results hashtag pagenumber))))</pre></td></tr><tr><td class="docs"><p>As the twitter api limits to 5 days, this will only count the results for these 5 days.
+Furthermore, as there is pagination, this function may take some time as this will query
+as long as there is page, then aggregate the results.</p>
+</td><td class="codes"></td></tr><tr><td class="docs"><p>Given a hashtag, return the number of tweets per user that tweet this hashtag.</p>
 </td><td class="codes"><pre class="brush: clojure">(defn results
   [hashtag]
-  (flatten
-   (take-while seq
-               (map #(results-page hashtag %)
-                    (iterate inc 1)))))</pre></td></tr><tr><td class="docs"><p>use to play with the repl</p>
+  (frequencies
+   (flatten
+    (take-while seq
+                (map #(results-page hashtag %)
+                     (iterate inc 1))))))</pre></td></tr><tr><td class="docs">
+</td><td class="codes"><pre class="brush: clojure">(fact &quot;results&quot;
+  (results :some-hashtag) =&gt; {:user1 3
+                              :user2 2
+                              :user3 1}
+  (provided
+    (results-page :some-hashtag 1) =&gt; [:user1 :user1 :user2]
+    (results-page :some-hashtag 2) =&gt; [:user1 :user2 :user3]))</pre></td></tr><tr><td class="docs"><p>use to play with the repl</p>
 </td><td class="codes"><pre class="brush: clojure">'(ns user
    (:import (twitter4j TwitterFactory Query))
    (:require [twitalyse.test.twitter])
