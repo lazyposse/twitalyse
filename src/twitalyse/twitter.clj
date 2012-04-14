@@ -18,11 +18,10 @@
     (.setRpp 100)
     (.setPage pagenumber)))
 
-(fact "make-query" ;; java not easy to test
-  (let [q (make-query "test" 10)]
-    (.getPage q) => 10
-    (.getRpp q) => 100
-    (.getQuery q) => "#test"))
+(fact "make-query"
+  (bean (make-query "test" 10)) => {:rpp 100, :until nil, :class twitter4j.Query, :page 10, :locale nil,
+                                    :geocode nil, :lang nil, :since nil, :maxId -1, :resultType nil,
+                                    :query "#test", :sinceId -1})
 
 (defn raw-results
   "Given a hashtag and a page number, return the raw results."
