@@ -2,14 +2,8 @@
   (:import [twitter4j TwitterFactory Query])
   (:use [midje.sweet]))
 
-(defn group-by-count
-  "Takes a seq and return a map of {values, count}"
-  [s]
-  (reduce #(assoc %1 %2 (if-let [cnt (%1 %2)] (inc cnt) 1)) {} s))
-
-(fact "group-by-count"
-  (group-by-count ["a" "a" "b" "a"]) => {"a" 3
-                                         "b" 1})
+(fact "frequencies"
+  (frequencies ["a" "a" "b" "a"]) => {"a" 3 "b" 1})
 
 (defn make-query
   "Build the query for a hashtag and a page number"
@@ -34,6 +28,9 @@
   [hashtag pagenumber]
   (map #(.getFromUser %)
        (.getTweets (raw-results hashtag pagenumber))))
+
+(fact
+  (results-page "ecole" 1) => nil)
 
 (defn results
   "Given a hashtag, return all the results for this hashtag (aggregate all the pages)."
